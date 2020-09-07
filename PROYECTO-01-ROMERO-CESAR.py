@@ -1,13 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[89]:
-
 
 import lifestore_file as ls  #import file of lists provided 
-
-
-# In[90]:
 
 
 #renaming lists
@@ -18,16 +13,11 @@ searches, sales, products = ls.lifestore_searches, ls.lifestore_sales,ls.lifesto
 
 # ### *1.1 Top best sales*
 
-# In[91]:
-
 
 #Getting just id of products sold
 total_sales = []
 for index in range(len(sales)):
     total_sales.append(sales[index][1]) 
-
-
-# In[92]:
 
 
 #Getting total sales per index
@@ -39,8 +29,6 @@ for id_product in range(len(products)):
         sales_by_index[id_product] = total_sales.count(id_product)  # .count specifies the quantity
 
 
-# In[93]:
-
 
 # Changing id_products to their product_names 
 sales_by_names = {}
@@ -48,14 +36,10 @@ for id_product,quantity_sold in sales_by_index.items():
     sales_by_names[products[id_product-1][1]] = quantity_sold   # id_product-1 indicates index on product list, since it starts at 0
 
 
-# In[94]:
-
 
 #Sorting products by quantity_sold (using lambda functiom)
 top_sales = sorted(sales_by_names.items(), key=lambda x: x[1], reverse=True)
 
-
-# In[95]:
 
 
 #Verify the stock available for products which were sold
@@ -65,10 +49,8 @@ for id_product,name,price,category,stock in products:
         stock_of_sold_products[id_product] = stock
 
 
+        
 # ### *1.2 Products without  sales*
-
-# In[96]:
-
 
 #Products not sold and their stock 
 not_sold_products = {}
@@ -80,9 +62,8 @@ for id_product,name,price,category,stock in products:
 lagging_products= sorted(not_sold_products.items(), key=lambda x: x[1], reverse=True)    
 
 
-# ### *1.3 Searches by products*
 
-# In[97]:
+# ### *1.3 Searches by products*
 
 
 #Getting total product searches
@@ -96,8 +77,6 @@ for id_product in range(1,len(products)+1): # products from 1 to 96
         searches_by_index[id_product] = total_searches.count(id_product) # .count inicates total number of searches
 
 
-# In[98]:
-
 
 #Converting id_products to their respective names
 searches_by_names = {}
@@ -105,16 +84,13 @@ for id_product,number_of_searches in searches_by_index.items():
     searches_by_names[products[id_product-1][1]] = number_of_searches
 
 
-# In[99]:
-
 
 #Gettin the top of products most searched (sorted using lambda function)
 top_searches = sorted(searches_by_names.items(), key=lambda x: x[1], reverse=True)
 
 
-# ### *1.4 Sales and Searches by categories*
 
-# In[100]:
+# ### *1.4 Sales and Searches by categories*
 
 
 #Getting list of products which belong to each category (there are 8 categories)
@@ -125,8 +101,6 @@ for id_product, name, price, category, stock in products:
     else: 
         total_categories[category].append(id_product)
 
-
-# In[101]:
 
 
 #Getting lists of searches of each product belonging to each category
@@ -142,14 +116,8 @@ for category,lists in searches_by_categories.items():
     searches_by_categories[category] = sorted(lists, key=lambda x: x[1], reverse=True)
 
 
-# In[102]:
-
-
 #Top searches per categories
 top_categories_searches = list(searches_by_categories.items())
-
-
-# In[103]:
 
 
 #Getting sales to each category 
@@ -165,16 +133,12 @@ for category,lists in sales_by_categories.items():
     sales_by_categories[category] = sorted(lists, key=lambda x: x[1], reverse=True)
 
 
-# In[104]:
-
-
 #top products sales for each category 
 top_categories_sales = list(sales_by_categories.items())
 
 
-# ## 2.Productos por reseña en el servicio
 
-# In[105]:
+# ## 2.Productos por reseña en el servicio
 
 
 #Generating list of products by score
@@ -183,9 +147,6 @@ for id_sale,id_product,rate,date,refund in sales:
     if rate not in best_rated.keys():
         best_rated[rate] = [id_product]
     else: best_rated[rate].append(id_product)
-
-
-# In[106]:
 
 
 #To each score_rate, sort id_products considering rates given and refund
@@ -201,9 +162,6 @@ for rate,products_list in top_best_rated.items():
     top_best_rated[rate] = sorted(products_list, key=lambda x: x[1], reverse=True)
 
 
-# In[107]:
-
-
 #Verifying which products were sold and then returned to the store
 refunds = []
 total_refunds = {}
@@ -215,18 +173,14 @@ for product in refunds:
     else: continue
 
 
-# In[108]:
-
-
 #Getting list of products based on the number of times they were returned
 products_refunded = sorted(total_refunds.items(), key=lambda x: x[1], reverse=True)
+
 
 
 # ## 3. Total de ingresos y ventas promedio mensuales
 
 # ### *3.1 Total_incomes*
-
-# In[109]:
 
 
 #Getting incomes per each product
@@ -235,24 +189,14 @@ for product in total_sales:
         incomes.append(products[product-1][2])
 
 
-# In[110]:
-
-
 #Total income
 total_income = sum(incomes)
 
 
 # ### *3.2 Incomes per months and year*
 
-# In[111]:
-
 
 import datetime  #To mmodify dates
-import matplotlib.pyplot as plt  #to plot
-
-
-# In[112]:
-
 
 #Changing format of the dates to datetime
 #Generatin list of sales by date
@@ -260,9 +204,6 @@ sales_date = []
 for id_sales,id_product,rate,date,refund in sales:
     new_date = datetime.datetime.strptime(date, '%d/%m/%Y').date()
     sales_date.append((id_product,new_date))
-
-
-# In[113]:
 
 
 #Generating lists of months per year
@@ -282,16 +223,9 @@ for month in range(1,13):
         monthly_sales[2019][month] = months_2019.count(month)
     elif month in months_2020:
         monthly_sales[2020][month] = months_2020.count(month)   
-        
-
-
-# In[114]:
-
+       
 
 month_names = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
-
-
-# In[115]:
 
 
 #Total incomes per year
@@ -306,9 +240,6 @@ for year in monthly_sales.keys():
     incomes_per_year[year] = year_income
 
 
-# In[116]:
-
-
 #Total incomes per month
 incomes_per_month = {}
 #Considering all months (both 2019 and 2020)
@@ -321,17 +252,11 @@ for months in list(monthly_sales[2020].keys())+list(monthly_sales[2019].keys()):
     incomes_per_month[months] = (month_names[months-1],q_income)
 
 
-# In[117]:
-
-
 #Sort months by the income generated
 top_month_incomes = sorted(list(incomes_per_month.items()),key= lambda x: x[1][1], reverse=True)
 
 
 # ## 4. Menu
-
-# In[ ]:
-
 
 #This is the interactive menu made
 
